@@ -1,0 +1,241 @@
+{% extends 'user/base.html'%}
+{% load static %}
+
+{% block user_block %} 
+	<div class="user-block clearfix">
+	  <img src="{% static 'img/user.jpg' %}" alt="User Avatar">
+	  <div class="detail">
+	    <strong>John Doe</strong>
+	  </div>
+	</div><!-- /user-block -->
+{% endblock user_block %}
+{% block main_menu %}
+	<div class="main-menu">
+	  <ul>
+	    <li class="active">
+	      <a href="/police/home">
+	        <span class="menu-icon">
+	          <i class="fa fa-desktop fa-lg"></i> 
+	        </span>
+	        <span class="text">
+	          Dashboard
+	        </span>
+	        <span class="menu-hover"></span>
+	      </a>
+	    </li>  
+	    <li>
+	      <a href="/police/crime">
+	        <span class="menu-icon">
+	          <i class="fa fa-eye fa-lg"></i> 
+	        </span>
+	        <span class="text">
+	          Crime
+	        </span>
+	        <span class="menu-hover"></span>
+	      </a>
+	    </li>
+	    <li>
+	      <a href="/police/road_accidents">
+	        <span class="menu-icon">
+	          <i class="fa fa-road fa-lg"></i> 
+	        </span>
+	        <span class="text">
+	          Road Accidents
+	        </span>
+	        <span class="menu-hover"></span>
+	      </a>
+	    </li>
+	    <li>
+	      <a href="/police/fire_emergencies">
+	        <span class="menu-icon">
+	          <i class="fa fa-fire fa-lg"></i> 
+	        </span>
+	        <span class="text">
+	          Fire Emergencies
+	        </span>
+	        <span class="menu-hover"></span>
+	      </a>
+	    </li>
+	    <li>
+	      <a href="/police/health_emergencies">
+	        <span class="menu-icon">
+	          <i class="fa fa-plus-circle fa-lg red"></i>
+	        </span>
+	        <span class="text">
+	          Health Emergencies
+	        </span>
+	        <span class="menu-hover"></span>
+	      </a>
+	    </li>
+	  </ul>
+	  
+	  <div class="alert alert-info">
+	    <strong>CitiSpy</strong> | <i>a safer city, a better city.</i> 
+	  </div>
+	</div><!-- /main-menu -->
+{% endblock main_menu %}
+
+        
+{% block content %}
+    <div id="main-container">
+      <div id="breadcrumb">
+        <ul class="breadcrumb">
+           <li><i class="fa fa-home"></i><a href="index.html"> Home</a></li>
+           <li class="active">Dashboard</li>   
+        </ul>
+      </div><!-- /breadcrumb-->
+      <div class="main-header clearfix">
+        <div class="page-title">
+          <h3 class="no-margin">Dashboard</h3>
+          <span>Welcome back Mr.John Doe</span>
+        </div><!-- /page-title -->
+      </div><!-- /main-header -->
+      
+	<div class="grey-container shortcut-wrapper">
+		<span>   |     </span>
+		<a href="#" class="shortcut-link">
+		  <span class="shortcut-icon">
+		    <i class="fa fa-bar-chart-o"></i>
+		  </span>
+		  <span class="text">Statistics</span>
+		</a>
+		<span>   |     </span>
+		<a href="#" class="shortcut-link">
+		  <span class="shortcut-icon">
+		    <i class="fa fa-envelope-o"></i>
+		    <span class="shortcut-alert">
+		      5
+		    </span> 
+		  </span>
+		  <span class="text">Messages</span>
+		</a>
+		<span>   |     </span>
+		<a href="#" class="shortcut-link">
+		  <span class="shortcut-icon">
+		    <i class="fa fa-globe"></i>
+		    <span class="shortcut-alert">
+		      7
+		    </span> 
+		  </span>
+		  <span class="text">Notification</span>
+		</a>
+		<span>   |     </span>
+	</div><!-- /grey-container -->
+      
+      <div class="padding-md">
+				<div class="row">
+		          <div class="col-sm-6 col-md-3">
+		            <div class="panel-stat3 bg-danger">
+		              <h2 class="m-top-none" id="userCount">362</h2>
+		              <h5>Registered users</h5>
+		              <i class="fa fa-arrow-circle-o-up fa-lg"></i><span class="m-left-xs">5% Higher than last week</span>
+		              <div class="stat-icon">
+		                <i class="fa fa-user fa-3x"></i>
+		              </div>
+		              <div class="refresh-button">
+		                <i class="fa fa-refresh"></i>
+		              </div>
+		              <div class="loading-overlay">
+		                <i class="loading-icon fa fa-refresh fa-spin fa-lg"></i>
+		              </div>
+		            </div>
+		          </div><!-- /.col -->
+		          <div class="col-sm-6 col-md-3">
+		            <div class="panel-stat3 bg-info">
+		              <h2 class="m-top-none"><span id="serverloadCount">15</span>%</h2>
+		              <h5>Server Load</h5>
+		              <i class="fa fa-arrow-circle-o-up fa-lg"></i><span class="m-left-xs">1% Higher than last week</span>
+		              <div class="stat-icon">
+		                <i class="fa fa-hdd-o fa-3x"></i>
+		              </div>
+		              <div class="refresh-button">
+		                <i class="fa fa-refresh"></i>
+		              </div>
+		              <div class="loading-overlay">
+		                <i class="loading-icon fa fa-refresh fa-spin fa-lg"></i>
+		              </div>
+		            </div>
+		          </div><!-- /.col -->
+		          <div class="col-sm-6 col-md-3">
+		            <div class="panel-stat3 bg-warning">
+		              <h2 class="m-top-none" id="orderCount">593</h2>
+		              <h5>New Orders</h5>
+		              <i class="fa fa-arrow-circle-o-up fa-lg"></i><span class="m-left-xs">3% Higher than last week</span>
+		              <div class="stat-icon">
+		                <i class="fa fa-shopping-cart fa-3x"></i>
+		              </div>
+		              <div class="refresh-button">
+		                <i class="fa fa-refresh"></i>
+		              </div>
+		              <div class="loading-overlay">
+		                <i class="loading-icon fa fa-refresh fa-spin fa-lg"></i>
+		              </div>
+		            </div>
+		          </div><!-- /.col -->
+		          <div class="col-sm-6 col-md-3">
+		            <div class="panel-stat3 bg-success">
+		              <h2 class="m-top-none" id="visitorCount">7214</h2>
+		              <h5>Total Visitors</h5>
+		              <i class="fa fa-arrow-circle-o-up fa-lg"></i><span class="m-left-xs">15% Higher than last week</span>
+		              <div class="stat-icon">
+		                <i class="fa fa-bar-chart-o fa-3x"></i>
+		              </div>
+		              <div class="refresh-button">
+		                <i class="fa fa-refresh"></i>
+		              </div>
+		              <div class="loading-overlay">
+		                <i class="loading-icon fa fa-refresh fa-spin fa-lg"></i>
+		              </div>
+		            </div>
+		          </div><!-- /.col -->
+		        </div>
+				<div class="row">
+					<div class="col-lg-8">
+			            <div class="panel panel-default">
+			              <div class="panel-heading clearfix">
+			                <span class="pull-left"><i class="fa fa-bar-chart-o fa-lg"></i> Website Traffic</span>
+			                <ul class="tool-bar">
+			                  <li><a href="#" class="refresh-widget" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Refresh"><i class="fa fa-refresh"></i></a></li>
+			                </ul>
+			              </div>
+			              <div class="panel-body" id="trafficWidget">
+			                <div id="placeholder" class="graph" style="height:250px"></div>
+			              </div>
+			              <div class="panel-footer">
+			                <div class="row row-merge">
+			                  <div class="col-xs-3 text-center border-right">
+			                    <h4 class="no-margin">1232</h4>
+			                    <small class="text-muted">Visitors</small>
+			                  </div>
+			                  <div class="col-xs-3 text-center border-right">
+			                    <h4 class="no-margin">5421</h4>
+			                    <small class="text-muted">Orders</small>
+			                  </div>
+			                  <div class="col-xs-3 text-center border-right">
+			                    <h4 class="no-margin">3021</h4>
+			                    <small class="text-muted">Tickets</small>
+			                  </div>
+			                  <div class="col-xs-3 text-center">
+			                    <h4 class="no-margin">7098</h4>
+			                    <small class="text-muted">Customers</small>
+			                  </div>
+			                </div><!-- ./row -->
+			              </div>
+			              <div class="loading-overlay">
+			                <i class="loading-icon fa fa-refresh fa-spin fa-lg"></i>
+			              </div>
+			            </div><!-- /panel -->
+			        </div><!-- /.col -->
+
+					<div class="col-lg-4">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div id="donutChart" style="height: 250px;"></div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.padding-md -->
+    </div><!-- /main-container -->
+{% endblock content %}
+    
