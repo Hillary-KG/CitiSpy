@@ -1,4 +1,7 @@
 # CitiSpy
 An emergency/occurrence report tool for Nairobians
-
-- mobile app branch-vcs for the mobile app for the system
+- Web Dashboard:
+    - admin's dashboard at the emergency dept
+    - data analysis and visualization
+- mobile app
+    - user end
