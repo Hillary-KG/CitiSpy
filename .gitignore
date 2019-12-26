@@ -1,1 +1,4 @@
 *.pyc
+/accounts/
+/citispy/
+/emergency_dept/
