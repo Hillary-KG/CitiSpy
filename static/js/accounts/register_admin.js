@@ -17,6 +17,7 @@ $(document).ready(function(){
     }
 
     var $csrftoken = getCookie('csrftoken');
+    console.log("csrf", $csrftoken);
 
     // function submitData() {
     //     // body...
@@ -38,13 +39,16 @@ $(document).ready(function(){
     $("#register_submit").click(function (e) {
         console.log("I was clicked");
         e.preventDefault();
-        var $formdata = $('#register_form').serializeArray();
+        var $formdata = $('#register_dept_admin').serializeArray();
         $formdata.push({
             name:'csrftoken',
             value:$csrftoken
         });
         $.ajax({
             type:"POST",
+            // headers:{
+            //     "X-CSRFToken": $csrftoken
+            // },
             url:"/accounts/registerAdmin/",
             data:$formdata,
             cache:false,
@@ -57,23 +61,22 @@ $(document).ready(function(){
                 if (res.status === "success") {
                     $("#form_content").css("display", "none");
                     $("#login-form-main-message").css("display", "block").html("<div class='alert alert-success'>user "+ res.user_email + " registered. Redirecting to home</div>");
-                    // console.log("response 1 ==>>>>>>", res);
-                    // setTimeout(location.href ='/home/', 6000000);
-                    location.href = '/accounts/userLogin/'
-                }else if (res.status ==="password mismatch") {
-                    $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Passwords entered did not match</div>");
-                    $("#form_content").css("display", "block");
-                    location.href='/accounts/registerAdmin/'
-                    // console.log("response 2 ==>>>>>>", res);
-                    // setTimeout(location.href='/accounts/registerAdmin/', 6000000);
-                }else {
-                    $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Unknown error occured, please try again.</div>");
-                    $("#form_content").css("display", "block");
-                    // console.log("response 3 ==>>>>>>", res);
-                    // setTimeout(function () {
-                    //     location.href='/accounts/registerAdmin/';
-                    // }, 600000);
-                }
+                    location.href = '/accounts/userLogin/';
+                }else{
+                    if (res.status === "invalid") {
+                        $.each(res.error, function (index, value) {
+                            $("#error_id_"+index).css('display', "block").html(value);
+                        })
+                    }
+                    if(res.error == "db error"){
+                        $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Unknown error occured while trying to create user, please try again.</div>");
+                        $("#form_content").css("display", "block");
+                    }
+                    // if (res.error ==="password mismatch") {
+                    //     $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Passwords entered did not match</div>");
+                    //     $("#form_content").css("display", "block");
+                    // }     
+                }      
             },
             // handle a non-successful response
             error: function(xhr,errmsg,err) {
@@ -82,5 +85,6 @@ $(document).ready(function(){
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
+        return false;
     });
 });

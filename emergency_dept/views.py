@@ -1,11 +1,9 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
-from accounts.models import User
-from accounts.forms import LoginForm, RegisterUserForm, RegisterDeptStaff
 from django.contrib.sessions.backends.db import SessionStore
 
 

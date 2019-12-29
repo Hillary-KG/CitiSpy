@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from accounts.models import User
-from accounts.forms import LoginForm, RegisterUserForm, RegisterDeptStaff
+from accounts.forms import LoginForm, RegisterUserForm, RegisterAdmin
 from django.views.generic import View
 from django.contrib.sessions.backends.db import SessionStore
 # from django.shortcuts import render
@@ -68,7 +68,7 @@ class UserLogin(View):
 class RegisterDeptStaffView(View):
     template_name = 'accounts/register_dept_staff.html'
     def get(self, request):
-        form = RegisterDeptStaff()
+        form = RegisterAdmin()
         return render(request, self.template_name, {'form':form})
 
     def post(self, request):
@@ -83,7 +83,7 @@ class RegisterDeptStaffView(View):
         u_name = (self.request.POST['first_name']+'_'+self.request.POST['last_name'])
         password = PasswordGenerator().generate()
         # print("password generated", password)
-        form = RegisterDeptStaff(self.request.POST)
+        form = RegisterAdmin(self.request.POST)
         
         if form.is_valid():
             try:
@@ -137,34 +137,36 @@ class RegisterAdminView(View):
     template_name = 'accounts/register_admin.html'
 
     def get(self, request):
-        form = RegisterUserForm()
+        form = RegisterAdmin()
 
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = RegisterUserForm(request.POST or None)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            phone_number = form.cleaned_data['phone_number']
-            password = form.cleaned_data['password']
-            confirm_password = form.cleaned_data['confirm_password']
-
-            if confirm_password == password:
+        form = RegisterAdmin(request.POST)
+        if request.is_ajax():
+            if form.is_valid():
+                # username = form.cleaned_data['username']
+                # email = form.cleaned_data['email']
+                # phone_number = form.cleaned_data['phone_number']
+                # password = form.cleaned_data['password']
+                # confirm_password = form.cleaned_data['confirm_password']
                 try:
-                    user = User.objects.create(username=username, email=email, phone_number=phone_number, is_superuser=True,
-                            account_type=0, is_staff=True)
+                    # user = User.objects.create(username=username, email=email, phone_number=phone_number, is_superuser=True,
+                    #         account_type=0, is_staff=True)
+                    form.save()
+                    print("saved data successfully")
                 except Exception as e:
                     print(e)
-                    res = {'status': "an error occured while saving user"}
+                    res = {'status': "fail", 'error':"db error"}
                 else:
-                    res = {'status': "success"}  
+                    res = {'status': "success", 'error': False}
             else:
-               res = {'status': "password mismatch"}
-
+                print("form data", request.POST)
+                print("form errors", form.errors)
+                res = {'status': "invalid", 'error': form.errors}
         return JsonResponse(res)
         
-        
+            
 
 
 

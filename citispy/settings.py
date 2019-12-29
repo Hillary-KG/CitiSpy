@@ -24,6 +24,8 @@ SECRET_KEY = '9b9y=7fyljm6+l2lbaprw5&l@wsv_0t2p#&6tf6&a)&ewbvlwx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#
+ADMINS = [('Hillary', 'kronnixhillux@gmail.com'), ]
 
 ALLOWED_HOSTS = []
 
@@ -132,4 +134,16 @@ STATIC_URL = '/static/'
 # print('STATIC_URL', STATIC_URL)
 
 #email settings
+# EMAIL_HOST = '' #SMTP host
+# EMAIL_PORT = '' #SMTP port
+# EMAIL_HOST_USER = '' #SMTP authentication - User
+# EMAIL_HOST_PASSWORD = '' #SMTP authentication - password
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'admin@citispy.org' #default email address to send emails
+
+SERVER_EMAIL = 'admin@citispy.org' #email address for emailing admins
+
+CSRF_COOKIE_SECURE = False

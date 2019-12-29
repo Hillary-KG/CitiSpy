@@ -36,38 +36,50 @@
                     <div id="login-form-main-message" hidden>
                         
                     </div>
-                    <form class="form-login" id="register_dept_staff">
+                    <form class="form-login" id="register_dept_admin">
                         {% csrf_token %}
                         <div class="form_content">
                             {{ form.non_field_errors }}
                             <div class="form-group">
-                                {{ form.username.errors }}
-                                <label class="control-label" for="{{ form.username.id_for_label }}">Username</label>
-                                {{ form.username }} 
+                                <span class="error" id="error_{{ form.first_name.id_for_label }}"></span>
+                                <label class="control-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                                {{ form.first_name }} 
                             </div>
                             <div class="form-group">
-                                {{ form.email.errors }}
-                                <label class="control-label" for="{{ form.email_address.id_for_label }}">Email address</label>
+                                <span class="error" id="error_{{ form.last_name.id_for_label }}"></span>
+                                <label class="control-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                                {{ form.last_name }} 
+                            </div>
+                            <div class="form-group">
+                                <span class="error" id="error_{{ form.email.id_for_label }}"></span>
+                                <label class="control-label" for="{{ form.email.id_for_label }}">Email address</label>
                                 {{ form.email }} 
                             </div>
                             <div class="form-group">
-                                {{ form.phone_number.errors }}
+                                <span class="error" id="error_{{ form.phone_number.id_for_label }}"></span>
                                 <label class="control-label" for="{{ form.phone_number.id_for_label }}">Phone Number</label>
                                 {{ form.phone_number }}
                             </div>
                             <div class="form-group">
-                                {{ form.password.errors }}
-                                <label class="control-label" for="{{ form.staff_number.id_for_label }}">Password</label>
-                                {{ form.password }}
+                                <span class="error" id="error_{{ form.staff_number.id_for_label }}"></span>
+                                <label class="control-label" for="{{ form.staff_number.id_for_label }}">Staff Number</label>
+                                {{ form.staff_number }}
                             </div>
-                            <div id="confirm_password_err" hidden>  
+                            <!-- <div id="confirm_password_err" hidden>   -->
                             </div>
                             <div class="form-group">
-                                {{ form.confirm_password.errors }}
-                                <label class="control-label" for="{{ form.confirm_password.id_for_label }}">Confirm Password</label>
-                                {{ form.confirm_password }}
+                                <span class="error" id="error_{{ form.admin_type.id_for_label }}"></span>
+                                <label class="control-label" for="{{ form.admin_type.id_for_label }}">Admin Type </label>
+                                <div>
+                                    {% for radio in form.admin_type %}
+                                        <label class="label-radio inline" for="{{ radio.id_for_label }}">
+                                            {{ radio.tag }}
+                                            <span class="custom-radio"></span>
+                                            {{ radio.choice_label }}
+                                        </label>
+                                    {% endfor %}
+                                </div>
                             </div>
-
                             <hr/>
                             <div class="form-group">
                                 <a class="btn btn-success btn-sm bounceIn animation-delay5 login-link pull-right" id="register_submit"><i class="fa fa-sign-in"></i>Register</a>
