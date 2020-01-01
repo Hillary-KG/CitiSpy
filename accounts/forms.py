@@ -1,13 +1,14 @@
 import random
 from django.utils.translation import ugettext as _
 from django import forms
-from accounts.models import User, Admins
+from accounts.models import User
 from django.core.exceptions import ValidationError 
 from django.core.validators import validate_email, RegexValidator 
 from .functions import admin_reg_email, new_admin_notification
+from django.contrib.auth.hashers import make_password
 
 class  LoginForm(forms.Form):
-    """docstring for  LoginForm"""
+    """LoginForm: User auth form"""
     #form fields 
     email = forms.EmailField(max_length=50,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'placeholder': "Email Address", 'class':"form-control input-sm bounceIn animation-delay2"})
                             ,validators=[validate_email])
@@ -30,28 +31,50 @@ class RegisterAdmin(forms.ModelForm):
                             widget=forms.TextInput(attrs={'name':"phone_number", 'class':"form-control input-sm bounceIn animation-delay2"}))
     email = forms.EmailField(max_length=255,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'class':"form-control input-sm bounceIn animation-delay2"}), 
                     validators=[validate_email])
-    admin_type = forms.ChoiceField(label="Admin type",required=True, choices=TYPES, widget=forms.RadioSelect(attrs={'name':"admin_type", 'class':"form-control input-sm bounceIn animation-delay2"}))
+    admin_type = forms.ChoiceField(required=True, choices=TYPES, widget=forms.RadioSelect(attrs={'name':"admin_type", 'class':"form-control input-sm bounceIn animation-delay2"}))
     # profile_pic = forms.ImageField(label="Profile Picture", widget=forms.FileInput(attrs={'name':"profile_pic", 'class':"form-control input-sm bounceIn animation-delay2",
                             # }))
 
     class Meta:
-        model = Admins
-        fields = []
+        model = User
+        fields = ['first_name', 'last_name', 'phone_number', 'email']
     
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if Admin.objects.filter(email=email).exists():
-            raise forms.ValidationError(_("An admin with the entered email address already exists"), code="user exists")
+    # def clean_admin_type(self):
+    #     # print(self.cleaned_data)
+    #     email = self.cleaned_data['email']
+    #     if self.cleaned_data['admin_type'] == 'SU' and User.objects.filter(email=email, is_superuser=True).exists():
+    #         raise forms.ValidationError(_("A superuser with the entered email address already exists"), code="su exists")
+    #     if self.cleaned_data['admin_type'] == 'DEPT. STAFF' and User.objects.filter(email=email, account_type=2).exists():
+    #         raise forms.ValidationError(_("A Staff with the entered email address already exists"), code="staff exists")
+    #     if self.cleaned_data['admin_type'] == 'DEPT. ADMIN' and User.objects.filter(email=email, account_type=1).exists():
+    #         raise forms.ValidationError(_("An admin with the entered email address already exists"), code="admin exists")
+
     def save(self, commit = True, *args, **kwargs):
         admin = super(RegisterAdmin, self).save(commit=False, *args, **kwargs)
-
+        print("admin here",self.cleaned_data)
         if commit:
             email = self.cleaned_data['email']
-            if self.cleaned_data['admint_type'] == 'SU':
-                admin.is_superuser = True   
-            admin.password = 'admin' + str(random.randint(999, 9999))
+            if self.cleaned_data['admin_type'] == 'SU' and User.objects.filter(email=email, is_superuser=True).exists():
+                raise forms.ValidationError(_("A superuser with the entered email address already exists"), code="su exists")
+            if self.cleaned_data['admin_type'] == 'DEPT. STAFF' and User.objects.filter(email=email, account_type=2).exists():
+                raise forms.ValidationError(_("A Staff with the entered email address already exists"), code="staff exists")
+            if self.cleaned_data['admin_type'] == 'DEPT. ADMIN' and User.objects.filter(email=email, account_type=1).exists():
+                raise forms.ValidationError(_("An admin with the entered email address already exists"), code="admin exists")
+            if self.cleaned_data['admin_type'] == 'SU':
+                admin.is_superuser = True
+                admin.account_type = 1
+                admin.is_staff = True
+            if self.cleaned_data['admin_type'] == 'DEPT. ADMIN':
+                admin.account_type = 2
+                admin.is_staff = True
+            if self.cleaned_data['admin_type'] == 'DEPT. STAFF':
+                admin.account_type = 3
+                admin.is_staff = True
+            plain_pswd = 'admin' + str(random.randint(999, 9999))
+            admin.password = make_password(plain_pswd)
+            print("plain", plain_pswd)
             
-            if new_admin_notification(admin.staff_number, admin.email) and admin_reg_email(admin.password, admin.email):
+            if new_admin_notification(admin.staff_number, admin.email) and admin_reg_email(plain_pswd, admin.email):
                 admin.save()
             
             
@@ -85,8 +108,35 @@ class RegisterUserForm(forms.ModelForm):
             return password_confirm
     def clean_email(self):
         email = self.cleaned_data['email']
-        if Admin.objects.filter(email=email).exists:
+        if User.objects.filter(email=email, account_type=3).exists:
             raise forms.ValidationError(_("A user with the entered email address already exists"), code="user exists")
+
+
+
+class ChangePasswordForm():
+    old_password = forms.CharField(max_length=250, label='Old Password',widget=forms.PasswordInput(attrs={'placeholder':"Old Password", 
+                'class':"form-control specialinput first",'name':"old_password",  'autocomplete':"off"}))
+    new_password = forms.CharField(max_length=250, label='New Password',widget=forms.PasswordInput(attrs={'placeholder':"New Password", 
+                'class':"form-control specialinput first",'name':"new_password",  'autocomplete':"off"}))
+    confirm_new_password = forms.CharField(max_length=250, label='Confirm New Password',widget=forms.PasswordInput(attrs={'placeholder':"COnfirm New Password", 
+                'class':"form-control specialinput first",'name':"confirm_new_password",  'autocomplete':"off"}))
+    
+    class Meta:
+        fields = ['old_password', 'new_password', 'confirm_new_password']
+    
+    def clean_old_password(self):
+        if not self.user.check_password(self.cleaned_data['old_password']):
+            raise forms.ValidationError(_("Wrong Old Password"), code='wrong password')
+
+    def clean_confirm_new_password(self):
+        if self.cleaned_data['confirm_new_password'] != self.cleaned_data['new_password']:
+            raise ValidationError(_("New passowrds did not match. Please try again."), code="password mismatch")
+    
+
+
+
+
+
 
 
 

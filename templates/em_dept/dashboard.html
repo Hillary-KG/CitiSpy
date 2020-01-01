@@ -75,6 +75,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
+        {% if request.user.is_authenticated %}
         <ul class="nav-notification clearfix">
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -95,42 +96,6 @@
                   </div>
                 </a>  
               </li>
-              <!-- <li>
-                <a class="clearfix" href="#">
-                  <img src="{% static 'img/user.png' %}" alt="User Avatar">
-                  <div class="detail">
-                    <strong>Jane Doe</strong>
-                    <p class="no-margin">
-                      Lorem ipsum dolor sit amet...
-                    </p>
-                    <small class="text-muted"><i class="fa fa-check text-success"></i> 5hr ago</small>
-                  </div>
-                </a>  
-              </li>
-              <li>
-                <a class="clearfix" href="#">
-                  <img src="{% static 'img/user.png' %}" alt="User Avatar">
-                  <div class="detail">
-                    <strong>Bill Doe</strong>
-                    <p class="no-margin">
-                      Lorem ipsum dolor sit amet...
-                    </p>
-                    <small class="text-muted"><i class="fa fa-reply"></i> Yesterday</small>
-                  </div>
-                </a>  
-              </li>
-              <li>
-                <a class="clearfix" href="#">
-                  <img src="{% static 'img/user.png' %}" alt="User Avatar">
-                  <div class="detail">
-                    <strong>Baby Doe</strong>
-                    <p class="no-margin">
-                      Lorem ipsum dolor sit amet...
-                    </p>
-                    <small class="text-muted"><i class="fa fa-reply"></i> 9 Feb 2013</small>
-                  </div>
-                </a>  
-              </li> -->
               <li><a href="#">View all messages</a></li>            
             </ul>
           </li>
@@ -150,48 +115,12 @@
                   <span class="time text-muted">Just now</span>
                 </a>
               </li>
-             <!--  <li>
-                <a href="#">
-                  <span class="notification-icon bg-success">
-                    <i class="fa fa-plus"></i>
-                  </span>
-                  <span class="m-left-xs">New user registration.</span>
-                  <span class="time text-muted">2m ago</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="notification-icon bg-danger">
-                    <i class="fa fa-bolt"></i>
-                  </span>
-                  <span class="m-left-xs">Application error.</span>
-                  <span class="time text-muted">5m ago</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="notification-icon bg-success">
-                    <i class="fa fa-usd"></i>
-                  </span>
-                  <span class="m-left-xs">2 items sold.</span>
-                  <span class="time text-muted">1hr ago</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="notification-icon bg-success">
-                    <i class="fa fa-plus"></i>
-                  </span>
-                  <span class="m-left-xs">New user registration.</span>
-                  <span class="time text-muted">1hr ago</span>
-                </a>
-              </li> -->
               <li><a href="#">View all notifications</a></li>           
             </ul>
           </li>
           <li class="profile dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <strong>John Doe</strong>
+              <strong>{{ request.user.first_name}} {{ request.user.last_name }}</strong>
               <span><i class="fa fa-chevron-down"></i></span>
             </a>
             <ul class="dropdown-menu">
@@ -199,17 +128,18 @@
                 <a class="clearfix" href="#">
                   <img src="{% static 'img/user.png' %}" alt="User Avatar">
                   <div class="detail">
-                    <strong>John Doe</strong>
-                    <p class="grey">John_Doe@email.com</p> 
+                    <strong>{{ request.user.first_name}} {{ request.user.last_name }}</strong>
+                    <p class="grey">{{ request.user.email }}</p> 
                   </div>
                 </a>
               </li>
-              <li><a tabindex="-1" href="profile.html" class="main-link"><i class="fa fa-edit fa-lg"></i> Edit profile</a></li>
+              <!-- <li><a tabindex="-1" href="profile.html" class="main-link"><i class="fa fa-edit fa-lg"></i> Edit profile</a></li> -->
               <li class="divider"></li>
               <li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i> Log out</a></li>
             </ul>
           </li>
         </ul>
+        {% endif %}
       </div><!-- /top-nav-->
 <!--       {% endblock top_nav %}
 
@@ -496,7 +426,7 @@
     </div>
 
     <div class="text-center">
-      <a class="btn btn-success m-right-sm" href="login.html">Logout</a>
+      <a class="btn btn-success m-right-sm" href="/accounts/logout/">Logout</a>
       <a class="btn btn-danger logoutConfirm_close">Cancel</a>
     </div>
   </div>

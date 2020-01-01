@@ -19,9 +19,6 @@ function getCookie(name) {
 $("#login_submit").click(function(e) {
         console.log("clicked");
         e.preventDefault();
-        //$dial_code = $("body .selected-dial-code").html();
-        //$phone_number_part = $("#id_phone_number_part").val();
-        //$("#id_phone_number").val($dial_code + $phone_number_part);
         var $formdata = $("#login_form").serializeArray();
         $formdata.push({
             name: "csrfmiddlewaretoken",
@@ -33,7 +30,6 @@ $("#login_submit").click(function(e) {
             url: "/accounts/userLogin/",
             data: $formdata,
             beforeSend: function() {
-                var image_url = "";
                 $("#login-form-main-message").css("display", "block").html("<div class='alert alert-info'><img height=\"24px;\" src=\"/static/images/double-ring.gif\" alt=\"loading\" />  Please wait...</div>");
                 $("#form_content").css("display", "none");
 
@@ -41,16 +37,16 @@ $("#login_submit").click(function(e) {
             cache: false,
             dataType: "json",
             success: function(data) {
-                console.log("data is: ",data);
-
-                if (data.status === 'error') {
+                if (data.error === 'incorrect password') {
                     $("#form_content").css("display", "block");
-                    $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Username or password Incorrect</div>");
+                    $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Email or Password Incorrect</div>");
+                    // location.href = '/accounts/userLogin/';
                 }
 
-                if (data.error === 'error') {
+                if (data.error === 'account not found') {
                     $("#form_content").css("display", "block");
                     $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Account not found</div>");
+                    // location.href = '/accounts/userLogin/';
                 }
 
                 if (data.status === "ok") {
@@ -87,35 +83,9 @@ $("#login_submit").click(function(e) {
                                 console.log("localStorage false setItem is: ",JSON.parse(localStorage.getItem("logedin_users")));
                             }
                         }
-                        if (referer === "notset") {
-                            location.href = "/emergency_dept/home/"
-                        } else {
-                            location.href = referer_value
-                        }
-                        // console.log("referer is: ",referer);
-                        // if(referer === "notset" || data.to === "employee"){
-                        //     if (data.to === "super_user"){
-                        //         location.href = "/emergency_dept/home/"
-                        //     }
-                        //     if (data.to === "dept_staff"){
-                        //         location.href = "/emergency_dept/home/"
-                        //     }
-                        //     if (data.to === "dept_admin"){
-                        //         location.href = "/deptAdmin/home/"
-                        //     }
-                        //     if (data.to === "PER"){
-                        //         location.href = "/PrivateEmReponse/home/"
-                        //     }
-                        //     if (data.to === "admin"){
-                        //         location.href = "/admin/home/"
-                        //     }
-                        // }else{
-                        //     location.href = referer_value
-                        // }
+                        location.href = "/em_dept/dashboard/";
                     }else{
                         $("#login-form-main-message").css("display", "block").html("");
-                        // $("#setcode").val(data.key);
-                        // $("#pnum").html(data.phone_number);
                         $("#form_content").css("display", "none");
                         $("#second_content").css("display", "block");
                     }
@@ -123,6 +93,5 @@ $("#login_submit").click(function(e) {
                 }
             }
         });
-
         return false;
     });

@@ -4,7 +4,7 @@ import random
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
-from citispy import settings
+from django.conf import settings
 
 def password_generator():
     characters = string.ascii_letters + string.punctuation + string.digits
@@ -19,13 +19,13 @@ def new_admin_notification(admin_staff_no, admin_email):
     message = "A new admin has been registered"
     subject = "New Admin Registration Notification."
     try:
-        html_content = get_template('accounts/admin_email_template.html').render(Context({'staff_number': admin_staff_no, 'admin_email':admin_email}))
+        html_content = get_template('accounts/admin_email_template.html').render({'staff_number': admin_staff_no, 'admin_email':admin_email})
         msg = EmailMultiAlternatives(subject, message, to_email)
-        msg.attach_alternative(html_content)
+        msg.attach_alternative(html_content, mimetype='text/html')
         msg.send()
         return True
     except Exception as e:
-        print("Email sending failed with", e)
+        print("Email(new admin notif.) sending failed with", e)
         return False
 
 
@@ -34,13 +34,13 @@ def admin_reg_email(admin_pswd,admin_email):
     to_email = admin_email
     subject = "Admin Registration Notification."
     try:
-        html_content = get_template('accounts/admin_reg_email_template.html').render(Context({'password': admin_pswd, 'admin_email':admin_email}))
+        html_content = get_template('accounts/admin_reg_email_template.html').render({'password': admin_pswd, 'admin_email':admin_email})
         msg = EmailMultiAlternatives(subject, message, to_email)
-        msg.attach_alternative(html_content)
+        msg.attach_alternative(html_content, mimetype='text/html')
         msg.send()
         return True
     except Exception as e:
-        print("Email sending failed with", e)
+        print("Email(admin reg) sending failed with", e)
         return False
    
 

@@ -17,7 +17,7 @@ $(document).ready(function(){
     }
 
     var $csrftoken = getCookie('csrftoken');
-    console.log("csrf", $csrftoken);
+    // console.log("csrf", $csrftoken);
 
     // function submitData() {
     //     // body...

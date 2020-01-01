@@ -18,7 +18,7 @@ class DashboardView(View):
         return render(request, self.template_name, {})
 
 
-    def post():
+    def post(self):
         pass
 
         
