@@ -17,7 +17,6 @@ function getCookie(name) {
 // var csrftoken = getCookie('csrftoken');
 
 $("#login_submit").click(function(e) {
-        console.log("clicked");
         e.preventDefault();
         var $formdata = $("#login_form").serializeArray();
         $formdata.push({
