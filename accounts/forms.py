@@ -1,4 +1,5 @@
 import random
+import re
 from django.utils.translation import ugettext as _
 from django import forms
 from accounts.models import User
@@ -6,6 +7,16 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email, RegexValidator 
 from .functions import admin_reg_email, new_admin_notification
 from django.contrib.auth.hashers import make_password
+from django.forms.utils import ErrorList
+
+#customizing how errors will be rendered
+class CustomErrorList(ErrorList):
+    def __str__(self):
+        return self.as_divs()
+    def as_divs(self):
+        if not self:
+            return ''
+        return '<div class="alert alert-danger">%s</div>'%(''.join(['<div class="error">%s</div>'%(e for e in self)]))
 
 class  LoginForm(forms.Form):
     """LoginForm: User auth form"""
@@ -13,7 +24,7 @@ class  LoginForm(forms.Form):
     email = forms.EmailField(max_length=50,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'placeholder': "Email Address", 'class':"form-control input-sm bounceIn animation-delay2"})
                             ,validators=[validate_email])
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':"Password", 
-                'class':"form-control specialinput first",'name':"password",  'autocomplete':"off"}))
+                'class':"form-control specialinput first bounceIn animation-delay2",'name':"password",  'autocomplete':"off"}))
     class Meta:
         fields = ['email', 'password']
 
@@ -27,10 +38,8 @@ class RegisterAdmin(forms.ModelForm):
     last_name = forms.CharField(max_length=30,label="Last Name", widget=forms.TextInput(attrs={'name':"last_name", 'class':"form-control input-sm bounceIn animation-delay2"}))
     # username = forms.CharField(max_length=30,label="Username", widget=forms.TextInput(attrs={'name':"username",'class':"form-control input-sm bounceIn animation-delay2"}))
     staff_number = forms.CharField(max_length=10,label="Staff Number", widget=forms.TextInput(attrs={'name':"staff_number", 'class':"form-control input-sm bounceIn animation-delay2"}))
-    phone_number = forms.RegexField(regex=r'^\+?1?\d{9,15}$',label="Phone Number", error_messages={'required':"Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."},
-                            widget=forms.TextInput(attrs={'name':"phone_number", 'class':"form-control input-sm bounceIn animation-delay2"}))
-    email = forms.EmailField(max_length=255,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'class':"form-control input-sm bounceIn animation-delay2"}), 
-                    validators=[validate_email])
+    phone_number = forms.CharField(label="Phone Number", max_length= 15,widget=forms.TextInput(attrs={'name':"phone_number", 'class':"form-control input-sm bounceIn animation-delay2"}))
+    email = forms.EmailField(max_length=255,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'class':"form-control input-sm bounceIn animation-delay2"}))
     admin_type = forms.ChoiceField(required=True, choices=TYPES, widget=forms.RadioSelect(attrs={'name':"admin_type", 'class':"form-control input-sm bounceIn animation-delay2"}))
     # profile_pic = forms.ImageField(label="Profile Picture", widget=forms.FileInput(attrs={'name':"profile_pic", 'class':"form-control input-sm bounceIn animation-delay2",
                             # }))
@@ -38,6 +47,18 @@ class RegisterAdmin(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'phone_number', 'email']
+    
+
+    def clean_phone_number(self):
+        regex = r'^\+?1?\d{9,15}$'
+        phone_num = self.cleaned_data['phone_number']
+        if re.fullmatch(regex, phone_num) == None:
+            raise forms.ValidationError(_("Invalid phone number. Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."),
+            code="invalid phone")
+        return phone_num
+
+
+        
     
     # def clean_admin_type(self):
     #     # print(self.cleaned_data)
@@ -86,10 +107,8 @@ class RegisterUserForm(forms.ModelForm):
     error_css_class = "error"
     required_css_class = "required"
     username = forms.CharField(max_length=25,label="Username", widget=forms.TextInput(attrs={'name':"username",'class':"form-control input-sm bounceIn animation-delay2", 'placeholder': "Username"}))
-    phone_number = forms.RegexField(regex=r'^\+?1?\d{9,15}$',label="Phone Number", error_messages={'required':"Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."},
-                            widget=forms.TextInput(attrs={'name':"phone_number", 'class':"form-control input-sm bounceIn animation-delay2", 'placeholder': "Phone Number"}))
-    email = forms.EmailField(max_length=255,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'placeholder': "Email Address", 'class':"form-control input-sm bounceIn animation-delay2"})
-                            ,validators=[validate_email])
+    phone_number = forms.CharField(max_length=15, label="Phone Number", widget=forms.TextInput(attrs={'name':"phone_number", 'class':"form-control input-sm bounceIn animation-delay2", 'placeholder': "Phone Number"}))
+    email = forms.EmailField(max_length=255,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'placeholder': "Email Address", 'class':"form-control input-sm bounceIn animation-delay2"}))
     password = forms.CharField(max_length=250, label='Password',widget=forms.PasswordInput(attrs={'placeholder':"Password", 
                 'class':"form-control specialinput first",'name':"password",  'autocomplete':"off"}))
     confirm_password = forms.CharField(max_length=250, label='Password',widget=forms.PasswordInput(attrs={'placeholder':"Password", 
@@ -105,32 +124,47 @@ class RegisterUserForm(forms.ModelForm):
         password_confirm = self.cleaned_data["confirm_password"]
         if password != password_confirm:
             raise forms.ValidationError(_("Your passwords do not match"), code="password mismatch")
-            return password_confirm
+        return password_confirm
     def clean_email(self):
         email = self.cleaned_data['email']
         if User.objects.filter(email=email, account_type=3).exists:
             raise forms.ValidationError(_("A user with the entered email address already exists"), code="user exists")
+        return email
+    def clean_phone_number(self):
+        regex = r'^\+?1?\d{9,15}$'
+        phone_num = self.cleaned_data['phone_number']
+        if re.fullmatch(regex, phone_num) == None:
+            raise forms.ValidationError(_("Invalid phone number. Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."),
+            code="invalid phone")
+        return phone_num
 
 
 
-class ChangePasswordForm():
+class PasswordResetForm():
     old_password = forms.CharField(max_length=250, label='Old Password',widget=forms.PasswordInput(attrs={'placeholder':"Old Password", 
                 'class':"form-control specialinput first",'name':"old_password",  'autocomplete':"off"}))
     new_password = forms.CharField(max_length=250, label='New Password',widget=forms.PasswordInput(attrs={'placeholder':"New Password", 
                 'class':"form-control specialinput first",'name':"new_password",  'autocomplete':"off"}))
-    confirm_new_password = forms.CharField(max_length=250, label='Confirm New Password',widget=forms.PasswordInput(attrs={'placeholder':"COnfirm New Password", 
+    confirm_new_password = forms.CharField(max_length=250, label='Confirm New Password',widget=forms.PasswordInput(attrs={'placeholder':"Confirm New Password", 
                 'class':"form-control specialinput first",'name':"confirm_new_password",  'autocomplete':"off"}))
     
     class Meta:
         fields = ['old_password', 'new_password', 'confirm_new_password']
     
     def clean_old_password(self):
-        if not self.user.check_password(self.cleaned_data['old_password']):
+        old_pswd = self.cleaned_data['old_password']
+        if not self.user.check_password(old_pswd):
             raise forms.ValidationError(_("Wrong Old Password"), code='wrong password')
+        return old_pswd
+
 
     def clean_confirm_new_password(self):
-        if self.cleaned_data['confirm_new_password'] != self.cleaned_data['new_password']:
-            raise ValidationError(_("New passowrds did not match. Please try again."), code="password mismatch")
+        old_pswd = self.cleaned_data['old_password']
+        new_pswd = self.cleaned_data['confirm_new_password'] 
+        if new_pswd != old_pswd:
+            raise forms.ValidationError(_("New passowrds did not match. Please try again."), code="password mismatch")
+        return new_pswd
+
     
 
 

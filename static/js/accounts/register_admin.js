@@ -36,19 +36,18 @@ $(document).ready(function(){
     };
     checkPswd();
 
-    $("#register_submit").click(function (e) {
+    var $crsf_token = {
+        name: 'csrftoken',
+        value: getCookie('csrftoken')
+    }
+
+    $("#register_dept_admin").submit(function (e) {
         console.log("I was clicked");
         e.preventDefault();
-        var $formdata = $('#register_dept_admin').serializeArray();
-        $formdata.push({
-            name:'csrftoken',
-            value:$csrftoken
-        });
+        var $formdata = $(this).serializeArray();
+        $formdata.push($crsf_token);
         $.ajax({
             type:"POST",
-            // headers:{
-            //     "X-CSRFToken": $csrftoken
-            // },
             url:"/accounts/registerAdmin/",
             data:$formdata,
             cache:false,
@@ -64,25 +63,26 @@ $(document).ready(function(){
                     location.href = '/accounts/userLogin/';
                 }else{
                     if (res.status === "invalid") {
+                        $("#login-form-main-message").css('display', "none");
+                        $("#form_content").css("display", "block");
+                        $("#reg_errors").empty();
                         $.each(res.error, function (index, value) {
-                            $("#error_id_"+index).css('display', "block").html(value);
+                            $("#reg_errors").css('display', "block").append("<div class='alert alert-danger'>"+ value+"</div>");
                         })
+                        
+
                     }
                     if(res.error == "db error"){
                         $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Unknown error occured while trying to create user, please try again.</div>");
                         $("#form_content").css("display", "block");
-                    }
-                    // if (res.error ==="password mismatch") {
-                    //     $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Passwords entered did not match</div>");
-                    //     $("#form_content").css("display", "block");
-                    // }     
+                    } 
                 }      
             },
             // handle a non-successful response
             error: function(xhr,errmsg,err) {
-                $('#results').html("<div class='alert alert-danger'>Oops! We have encountered an error: "+errmsg+
+                $('#results').html("<div class='alert alert-danger'>Oops! We have encountered an error: "+ xhr.status + ": " + xhr.responseText+
                     "<a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                // console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
         return false;

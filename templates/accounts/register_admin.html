@@ -33,12 +33,11 @@
         <div class="login-widget animation-delay1"> 
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div id="login-form-main-message" hidden>
-                        
-                    </div>
+                    <div id="login-form-main-message" hidden></div>
+                    <div id="reg_errors" hidden></div>
                     <form class="form-login" id="register_dept_admin">
                         {% csrf_token %}
-                        <div class="form_content">
+                        <div id="form_content">
                             {{ form.non_field_errors }}
                             <div class="form-group">
                                 <span class="error" id="error_{{ form.first_name.id_for_label }}"></span>
@@ -83,7 +82,10 @@
                         </div>
                         <hr/>
                         <div class="form-group">
-                            <a class="btn btn-success btn-sm bounceIn animation-delay5 login-link pull-right" id="register_submit"><i class="fa fa-sign-in"></i>Register</a>
+                            <button type="submit" class="btn btn-success btn-sm bounceIn animation-delay5 pull-right">
+                                Register
+                            </button>
+                            <!-- <a class="btn btn-success btn-sm bounceIn animation-delay5 login-link pull-right" id="register_submit"><i class="fa fa-sign-in"></i>Register</a> -->
                         </div>         
                     </form>
                 </div>
