@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from accounts.models import User
-from accounts.forms import LoginForm, RegisterUserForm, RegisterAdmin, PasswordResetForm, CustomErrorList
+from accounts.forms import LoginForm, RegisterUserForm, RegisterAdmin, CustPasswordResetForm, CustomErrorList
 from django.views.generic import View
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth.hashers import check_password
@@ -125,7 +125,19 @@ class LogoutUser(LogoutView):
 @method_decorator(login_required,name='post')
 class ResetPassword(PasswordResetView):
     template_name = 'accounts/reset_password.html'
-    # form_class = 
+    form_class = CustPasswordResetForm
+
+    def get(self, request):
+        return render(request, self.template_name, {'form': self.form_class })
+    
+    def post(self, request):
+        form = self.form_class(data=request.POST)
+        user = request.user
+        if request.is_ajax():
+            if form.is_valid():
+                new_pswd = form.cleaned_data['new_password']
+                
+
 
 
 
