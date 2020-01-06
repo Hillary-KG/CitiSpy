@@ -14,7 +14,13 @@ class DashboardView(View):
     """
     template_name = 'em_dept/dashboard.html'
 
+    # @csrf_protect
+    @login_required
     def get( self, request):
+        if request.user.is_authenticated:
+            print("yes")
+        else:
+            print("No user")
         return render(request, self.template_name, {})
 
 

@@ -59,7 +59,7 @@ def login(request):
 
 
 @method_decorator(csrf_protect, name='post')
-class UserLogin(View):
+class UserLogin(LoginView):
     """docstring for UserLogin"""
     template_name = 'accounts/login.html'
     form_class = LoginForm
