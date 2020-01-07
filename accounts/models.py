@@ -6,8 +6,8 @@ from django.core.validators import RegexValidator
 class User(AbstractBaseUser):
     '''model that represents a user in the system '''
     username = models.CharField(max_length=150, blank=True, null=True)
-    first_name = models.CharField(max_length=30, null=False)
-    last_name = models.CharField(max_length=150, null=False)
+    first_name = models.CharField(max_length=30, blank=False, null=False)
+    last_name = models.CharField(max_length=150, blank=False, null=False)
     email = models.EmailField(max_length=255, null=False, unique=True, blank=False)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.") 
     phone_number = models.CharField(max_length=16,validators=[phone_regex], null=False, blank=False)

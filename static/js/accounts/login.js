@@ -54,7 +54,7 @@ $(document).ready(function(){
                             location.href = '/em_dept/dashboard/';
                         }
                     }
-                }else{
+                } else {
                     if (data.error == 'incorrect password') {
                         $("#form_content").css("display", "block");
                         $("#id_password").val('');

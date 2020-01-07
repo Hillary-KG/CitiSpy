@@ -9,6 +9,7 @@ from django.views.generic import View
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView
+from django.contrib.auth import login as login_user, logout, authenticate
 
 from .functions import password_generator
 
@@ -59,7 +60,7 @@ def login(request):
 
 
 @method_decorator(csrf_protect, name='post')
-class UserLogin(LoginView):
+class UserLogin(View):
     """docstring for UserLogin"""
     template_name = 'accounts/login.html'
     form_class = LoginForm
@@ -77,13 +78,19 @@ class UserLogin(LoginView):
             print("entered form")
             if form.is_valid():
                 print("form valid")
-                email = form.cleaned_data['email']
+                credentials = {
+                    'email': form.cleaned_data['email'],
+                    'password': form.cleaned_data['password']
+                }
+               
                 try:
-                    user = User.objects.get(email=email)
-                    print("user obj", user)
-                    if user.check_password(form.cleaned_data['password']):
+                    user = User.objects.get(email=credentials['email'])
+                    # print("user obj", user)
+                    # user = authenticate(request, username=credentials['email'], password=credentials['password'])
+                    if user.check_password(credentials['password']):
                         # 0-super admin, 1-dept admin,2-dept staff, 3-end user 
                         print("correct password")
+                        login_user(request, user)
                         if user.account_type == 4:
                             if user.last_login == None or user.last_login == '':
                                 to = "verify"

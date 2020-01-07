@@ -4,6 +4,7 @@
 {% block top_nav %}
   <div id="top-nav" class="fixed skin-6">
       <a href="#" class="brand">
+        <span><img src="{% static 'img/question.png' %}" alt="Logo" style="width: 25px;height: 25px;"></span>
         <span>CitiSpy</span>
       </a><!-- /brand -->         
       <button type="button" class="navbar-toggle pull-left" id="sidebarToggle">
@@ -74,7 +75,12 @@
                 </div>
               </a>
             </li>
-            <!-- <li><a tabindex="-1" href="profile.html" class="main-link"><i class="fa fa-edit fa-lg"></i> Edit profile</a></li> -->
+            {% if request.user.account_type == 1%}
+              <li><a tabindex="-1" href="#registerAdmin" class="main-link"><i class="fa fa-plus-circle"></i> Regiseter New Dept. Admin</a></li>
+              <li><a tabindex="-1" href="#registerAdmin" class="main-link"><i class="fa fa-plus-circle"></i> Add Admin</a></li>
+            {% elif request.user.account_type == 2%}
+              <li><a tabindex="-1" href="#registerAdmin" class="main-link"><i class="fa fa-plus-circle"></i> Regiseter New Dept. Admin</a></li>
+            {% endif %}
             <li class="divider"></li>
             <li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i> Log out</a></li>
           </ul>
@@ -273,7 +279,91 @@
       <a class="btn btn-danger logoutConfirm_close">Cancel</a>
     </div>
   </div>
+  <!--Modal-->
+  <div class="custom-popup width-50">
+  <div class="modal fade" id="registerAdmin">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              {% if request.user.account_type == 1%}
+                <h4>Create new department admin</h4>
+              {% elif request.user.account_type == 2%}
+                <h4>Create new superuser</h4>
+              {% endif %}
+            </div>
+          <div class="modal-body">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                  <div id="login-form-main-message" hidden></div>
+                  <div id="reg_errors" hidden></div>
+                  <form class="form-login" id="register_dept_admin">
+                    {% csrf_token %}
+                    <div id="form_content">
+                      {{ admin_form.non_field_errors }}
+                      <div class="form-group">
+                          <span class="error" id="error_{{ admin_form.first_name.id_for_label }}"></span>
+                          <label class="control-label" for="{{ admin_form.first_name.id_for_label }}">First Name</label>
+                          {{ admin_form.first_name }} 
+                      </div>
+                      <div class="form-group">
+                          <span class="error" id="error_{{ admin_form.last_name.id_for_label }}"></span>
+                          <label class="control-label" for="{{ admin_form.last_name.id_for_label }}">Last Name</label>
+                          {{ admin_form.last_name }} 
+                      </div>
+                      <div class="form-group">
+                          <span class="error" id="error_{{ admin_form.email.id_for_label }}"></span>
+                          <label class="control-label" for="{{ admin_form.email.id_for_label }}">Email address</label>
+                          {{ admin_form.email }} 
+                      </div>
+                      <div class="form-group">
+                          <span class="error" id="error_{{ admin_form.phone_number.id_for_label }}"></span>
+                          <label class="control-label" for="{{ admin_form.phone_number.id_for_label }}">Phone Number</label>
+                          {{ admin_form.phone_number }}
+                      </div>
+                      <div class="form-group">
+                          <span class="error" id="error_{{ admin_form.staff_number.id_for_label }}"></span>
+                          <label class="control-label" for="{{ admin_form.staff_number.id_for_label }}">Staff Number</label>
+                          {{ admin_form.staff_number }}
+                      </div>
+                      <!-- <div id="confirm_password_err" hidden>   -->
+                      <div class="form-group">
+                          <span class="error" id="error_{{ admin_form.admin_type.id_for_label }}"></span>
+                          <label class="control-label" for="{{ admin_form.admin_type.id_for_label }}">Admin Type </label>
+                          <div>
+                              {% for radio in admin_form.admin_type %}
+                                  <label class="label-radio inline" for="{{ radio.id_for_label }}">
+                                      {{ radio.tag }}
+                                      <span class="custom-radio"></span>
+                                      {{ radio.choice_label }}
+                                  </label>
+                              {% endfor %}
+                          </div>
+                      </div>
+                      <hr/>
+                      <div class="form-group">
+                          <button type="submit" class="btn btn-success btn-sm bounceIn animation-delay5 pull-right">
+                              Register
+                          </button>
+                          <!-- <a class="btn btn-success btn-sm bounceIn animation-delay5 login-link pull-right" id="register_submit"><i class="fa fa-sign-in"></i>Register</a> -->
+                      </div>  
+                    </div>       
+                  </form>
+              </div>
+            </div><!-- /panel -->
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true">Close</button>
+          <a href="#" class="btn btn-danger btn-sm">Save changes</a>
+          </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
+  
 {% endblock content %}
 
 {% block js %}
+    <!-- Page JS -->
+    <script src="{% static 'js/accounts/register_admin.js' %}"></script>
 {% endblock js %}
