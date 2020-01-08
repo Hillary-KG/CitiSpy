@@ -79,15 +79,16 @@ class UserLogin(View):
             if form.is_valid():
                 print("form valid")
                 credentials = {
-                    'email': form.cleaned_data['email'],
+                    'username': form.cleaned_data['email'],
                     'password': form.cleaned_data['password']
                 }
                
                 try:
-                    user = User.objects.get(email=credentials['email'])
-                    # print("user obj", user)
-                    # user = authenticate(request, username=credentials['email'], password=credentials['password'])
-                    if user.check_password(credentials['password']):
+                    user = User.objects.get(email=credentials['username'])
+                    print("user obj", user)
+                    user = authenticate(request, **credentials)
+                    # if user.check_password(credentials['password']):
+                    if user is not None:
                         # 0-super admin, 1-dept admin,2-dept staff, 3-end user 
                         print("correct password")
                         login_user(request, user)
@@ -190,15 +191,16 @@ class RegisterAdminView(View):
         print(self.request.POST)
         if request.is_ajax():
             if form.is_valid():
-                print("form data:",form.cleaned_data)
+                # print("form data:",form.cleaned_data)
                 try:
-                    form.save()
-                    print("saved data successfully")
+                    admin = form.save()
+                    print("saved data",admin)
+                    admin_email = admin.email                    
                 except Exception as e:
                     print(e)
                     res = {'status': "fail", 'error':"db error"}
                 else:
-                    res = {'status': "success", 'error': False}
+                    res = {'status': "success", 'error': False, 'admin_email': admin_email }
             else:
                 # print("form data:",form.cleaned_data)
                 print("form errors", form.errors)

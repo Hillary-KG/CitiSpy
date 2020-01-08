@@ -59,8 +59,8 @@ $(document).ready(function(){
             success: function (res) {
                 if (res.status === "success") {
                     $("#form_content").css("display", "none");
-                    $("#login-form-main-message").css("display", "block").html("<div class='alert alert-success'>user "+ res.user_email + " registered. Redirecting to home</div>");
-                    location.href = '/accounts/userLogin/';
+                    $("#reg_errors").css("display", "none");
+                    $("#login-form-main-message").css("display", "block").html("<div class='alert alert-success'>Success! User <strong>"+ res.admin_email + "</strong> has been registered successfully.</div>");
                 }else{
                     if (res.status === "invalid") {
                         $("#login-form-main-message").css('display', "none");
@@ -69,8 +69,6 @@ $(document).ready(function(){
                         $.each(res.error, function (index, value) {
                             $("#reg_errors").css('display', "block").append("<div class='alert alert-danger'>"+ value+"</div>");
                         })
-                        
-
                     }
                     if(res.error == "db error"){
                         $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Unknown error occured while trying to create user, please try again.</div>");
@@ -85,6 +83,5 @@ $(document).ready(function(){
                 // console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
-        return false;
     });
 });

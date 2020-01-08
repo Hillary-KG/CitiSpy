@@ -5,6 +5,7 @@ from . import views, forms
 #accounts urls
 
 urlpatterns = [
+    # path('userLogin/', auth_views.LoginView.as_view(template_name='accounts/login.html', authentication_form=forms.LoginForm ), name='login'),
     path('userLogin/', views.UserLogin.as_view(), name='login'),
     path('registerUser/', views.RegisterUserView.as_view(), name='register_user'),
     path('registerAdmin/', views.RegisterAdminView.as_view(), name='register_admin'),

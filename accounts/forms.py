@@ -47,7 +47,7 @@ class RegisterAdmin(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'phone_number', 'email']
+        fields = ['first_name', 'last_name', 'phone_number', 'email', 'staff_number']
     
 
     def clean_phone_number(self):
@@ -85,6 +85,7 @@ class RegisterAdmin(forms.ModelForm):
             
             if new_admin_notification(admin.staff_number, admin.email) and admin_reg_email(plain_pswd, admin.email):
                 admin.save()
+            return admin
             
             
 
