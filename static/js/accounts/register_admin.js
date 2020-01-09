@@ -46,6 +46,7 @@ $(document).ready(function(){
         e.preventDefault();
         var $formdata = $(this).serializeArray();
         $formdata.push($crsf_token);
+        console.log($formdata);
         $.ajax({
             type:"POST",
             url:"/accounts/registerAdmin/",
@@ -70,10 +71,13 @@ $(document).ready(function(){
                             $("#reg_errors").css('display', "block").append("<div class='alert alert-danger'>"+ value+"</div>");
                         })
                     }
-                    if(res.error == "db error"){
-                        $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Unknown error occured while trying to create user, please try again.</div>");
+                    else if(res.error == "db error"){
+                        $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>Oops! An error occured while trying to create user, please try again.</div>");
                         $("#form_content").css("display", "block");
-                    } 
+                    }else{
+                        $("#login-form-main-message").css("display", "block").html("<div class='alert alert-danger'>"+ res.error +"</div>");
+                        $("#form_content").css("display", "block");
+                    }
                 }      
             },
             // handle a non-successful response

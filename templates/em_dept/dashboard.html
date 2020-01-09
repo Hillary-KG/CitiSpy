@@ -76,10 +76,11 @@
               </a>
             </li>
             {% if request.user.account_type == 1%}
-              <li><a tabindex="-1" id="registerDeptAdmin" class="main-link registerAdmin" href="#"><i class="fa fa-plus-circle"></i> Regiseter New Dept. Admin</a></li>
-              <li><a tabindex="-1" id="registerSuperAdmin" class="main-link registerAdmin" href="#"><i class="fa fa-plus-circle"></i> Add Admin</a></li>
+              <li><a tabindex="-1" class="main-link registerAdmin" href="#"><i class="fa fa-plus-circle"></i> Register Dept. Admin</a></li>
+              <li><a tabindex="-1" class="main-link registerAdmin" href="#"><i class="fa fa-plus-circle"></i> Register Dept. Staff</a></li>
+              <li><a tabindex="-1" class="main-link registerAdmin" href="#"><i class="fa fa-plus-circle"></i> Add super admin</a></li>
             {% elif request.user.account_type == 2%}
-              <li><a tabindex="-1" id="registerAdmin" class="main-link" href="#"><i class="fa fa-plus-circle"></i> Regiseter New Dept. Admin</a></li>
+              <li><a tabindex="-1" class="main-link registerAdmin" href="#"><i class="fa fa-plus-circle"></i> Register Dept. Staff</a></li>
             {% endif %}
             <li class="divider"></li>
             <li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i> Log out</a></li>
@@ -130,11 +131,11 @@
 							</a>
 							<ul class="submenu">
               {% if request.user.account_type == 1%}
-								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i> Add new dept. admin</span></a></li>
-								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i> Add staff</span></a></li>
+								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i>Register Dept. Admin</span></a></li>
+								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i> Register Dept. Staff</span></a></li>
 								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i> Add super admin</span></a></li>
               {% elif request.user.account_type == 2 %}
-                <li><a href="button.html"><span class="submenu-label">Add staff</span></a></li>
+                <li><a href="button.html"><span class="submenu-label">Register Dept. Staff</span></a></li>
               {% endif %}
 							</ul>
 						</li>
@@ -319,6 +320,7 @@
                 <div id="reg_errors" hidden></div>
                 <form class="form-login" id="register_dept_admin">
                   {% csrf_token %}
+                  <div id="admin_type_div"></div>
                   <div id="form_content">
                     {{ admin_form.non_field_errors }}
                     <div class="form-group">
@@ -347,19 +349,6 @@
                         {{ admin_form.staff_number }}
                     </div>
                     <!-- <div id="confirm_password_err" hidden>   -->
-                    <div class="form-group">
-                        <span class="error" id="error_{{ admin_form.admin_type.id_for_label }}"></span>
-                        <label class="control-label" for="{{ admin_form.admin_type.id_for_label }}">Admin Type </label>
-                        <div>
-                            {% for radio in admin_form.admin_type %}
-                                <label class="label-radio inline" for="{{ radio.id_for_label }}">
-                                    {{ radio.tag }}
-                                    <span class="custom-radio"></span>
-                                    {{ radio.choice_label }}
-                                </label>
-                            {% endfor %}
-                        </div>
-                    </div>
                     <hr/>
                     <div class="form-group">
                       <button class="btn btn-danger btn-sm" data-dismiss="modal" aria-hidden="true">
@@ -389,11 +378,24 @@
     $(document).ready(function(){
 
       $('.registerAdmin').click(function () {
-        console.log("inside modal");
+        var value_= $(this).text();
+        console.log(value_);
+        if (value_ === " Register Dept. Admin") {
+          $("#admin_type_div").html("<input name='admin_type' type='hidden' value='dept_admin'>");
+        }
+        if(value_ === " Register Dept. Staff"){
+          $("#admin_type_div").html("<input name='admin_type' type='hidden' value='dept_staff'>");
+        }
+        if(value_ === " Add super admin"){
+          console.log("val 2", value_);
+          $("#admin_type_div").html("<input name='admin_type' type='hidden' value='superuser'>");
+        }
+
         $('#registerAdmin_modal').modal("show");
       });
       $("#registerAdmin_modal").on("hidden.bs.modal", function(){
         // $("#register_dept_admin")[0].reset();
+        $("#admin_type_div").empty();
         $("#login-form-main-message").css("display", "none");
         $("#reg_errors").css("display", "none");
       });

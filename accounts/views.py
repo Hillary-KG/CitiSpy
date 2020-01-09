@@ -193,9 +193,29 @@ class RegisterAdminView(View):
             if form.is_valid():
                 # print("form data:",form.cleaned_data)
                 try:
-                    admin = form.save()
+                    admin_type = self.request.POST['admin_type']
+                    admin_email = self.request.POST['email']
+                    admin = form.save(commit=False)
+                    
+                    if admin_type == "superuser" and User.objects.filter(email=admin_email, is_superuser=True).exists():
+                        res = {'status': "fail", 'error':"A superuser with the entered email address already exists"}
+                    if admin_type == "dept_admin" and User.objects.filter(email=admin_email, account_type=2).exists():
+                        res = {'status': "fail", 'error':"An admin with the entered email address already exists"}
+                    if admin_type == "dept_staff" and User.objects.filter(email=admin_email, account_type=3).exists():
+                        res = {'status': "fail", 'error':"A Staff with the entered email address already exists"}
+
+                    if admin_type == 'superuser':
+                        admin.is_superuser = True
+                        admin.account_type = 1
+                        admin.is_staff = True
+                    if admin_type == 'dept_admin':
+                        admin.account_type = 2
+                        admin.is_staff = True
+                    if admin_type == 'dept_staff':
+                        admin.account_type = 3
+                        admin.is_staff = True
+                    admin.save()
                     print("saved data",admin)
-                    admin_email = admin.email                    
                 except Exception as e:
                     print(e)
                     res = {'status': "fail", 'error':"db error"}

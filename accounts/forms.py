@@ -41,7 +41,7 @@ class RegisterAdmin(forms.ModelForm):
     staff_number = forms.CharField(max_length=10,label="Staff Number", widget=forms.TextInput(attrs={'name':"staff_number", 'class':"form-control input-sm bounceIn animation-delay2"}))
     phone_number = forms.CharField(label="Phone Number", max_length= 15,widget=forms.TextInput(attrs={'name':"phone_number", 'class':"form-control input-sm bounceIn animation-delay2"}))
     email = forms.EmailField(max_length=255,label="Email Address", widget=forms.EmailInput(attrs={'name':"email", 'class':"form-control input-sm bounceIn animation-delay2"}))
-    admin_type = forms.ChoiceField(required=True, choices=TYPES, widget=forms.RadioSelect(attrs={'name':"admin_type", 'class':"form-control input-sm bounceIn animation-delay2"}))
+    # admin_type = forms.ChoiceField(required=True, choices=TYPES, widget=forms.RadioSelect(attrs={'name':"admin_type", 'class':"form-control input-sm bounceIn animation-delay2"}))
     # profile_pic = forms.ImageField(label="Profile Picture", widget=forms.FileInput(attrs={'name':"profile_pic", 'class':"form-control input-sm bounceIn animation-delay2",
                             # }))
 
@@ -63,22 +63,22 @@ class RegisterAdmin(forms.ModelForm):
         print("admin here",self.cleaned_data)
         if commit:
             email = self.cleaned_data['email']
-            if self.cleaned_data['admin_type'] == 'SU' and User.objects.filter(email=email, is_superuser=True).exists():
-                raise forms.ValidationError(_("A superuser with the entered email address already exists"), code="su exists")
-            if self.cleaned_data['admin_type'] == 'DEPT. STAFF' and User.objects.filter(email=email, account_type=2).exists():
-                raise forms.ValidationError(_("A Staff with the entered email address already exists"), code="staff exists")
-            if self.cleaned_data['admin_type'] == 'DEPT. ADMIN' and User.objects.filter(email=email, account_type=1).exists():
-                raise forms.ValidationError(_("An admin with the entered email address already exists"), code="admin exists")
-            if self.cleaned_data['admin_type'] == 'SU':
-                admin.is_superuser = True
-                admin.account_type = 1
-                admin.is_staff = True
-            if self.cleaned_data['admin_type'] == 'DEPT. ADMIN':
-                admin.account_type = 2
-                admin.is_staff = True
-            if self.cleaned_data['admin_type'] == 'DEPT. STAFF':
-                admin.account_type = 3
-                admin.is_staff = True
+            # if self.cleaned_data['admin_type'] == 'superuser' and User.objects.filter(email=email, is_superuser=True).exists():
+            #     raise forms.ValidationError(_("A superuser with the entered email address already exists"), code="su exists")
+            # if self.cleaned_data['admin_type'] == 'dept_staff' and User.objects.filter(email=email, account_type=2).exists():
+            #     raise forms.ValidationError(_("A Staff with the entered email address already exists"), code="staff exists")
+            # if self.cleaned_data['admin_type'] == 'dept_admin' and User.objects.filter(email=email, account_type=1).exists():
+            #     raise forms.ValidationError(_("An admin with the entered email address already exists"), code="admin exists")
+            # if self.cleaned_data['admin_type'] == 'superuser':
+            #     admin.is_superuser = True
+            #     admin.account_type = 1
+            #     admin.is_staff = True
+            # if self.cleaned_data['admin_type'] == 'dept_admin':
+            #     admin.account_type = 2
+            #     admin.is_staff = True
+            # if self.cleaned_data['admin_type'] == 'dept_staff':
+            #     admin.account_type = 3
+            #     admin.is_staff = True
             plain_pswd = 'admin' + str(random.randint(999, 9999))
             admin.password = make_password(plain_pswd)
             print("plain", plain_pswd)
