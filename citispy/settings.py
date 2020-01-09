@@ -53,6 +53,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#setting the age of session cookies 
+SESSION_COOKIE_AGE = 600
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+
 ROOT_URLCONF = 'citispy.urls'
 
 TEMPLATES = [
@@ -81,6 +87,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'citispy',
+        # 'USER': 'hillux',
         'PASSWORD':'hillux123',
         'HOST':'localhost',
         'PORT':'5432',
