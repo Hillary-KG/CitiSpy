@@ -59,6 +59,8 @@ $(document).ready(function(){
             },
             success: function (res) {
                 if (res.status === "success") {
+                    register_dept_admin
+                    // $("#register_dept_admin")[0].reset();
                     $("#form_content").css("display", "none");
                     $("#reg_errors").css("display", "none");
                     $("#login-form-main-message").css("display", "block").html("<div class='alert alert-success'>Success! User <strong>"+ res.admin_email + "</strong> has been registered successfully.</div>");

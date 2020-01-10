@@ -131,7 +131,7 @@
 							</a>
 							<ul class="submenu">
               {% if request.user.account_type == 1%}
-								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i>Register Dept. Admin</span></a></li>
+								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i> Register Dept. Admin</span></a></li>
 								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i> Register Dept. Staff</span></a></li>
 								<li><a href="#" class="registerAdmin"><span class="submenu-label"><i class="fa fa-plus-circle fa-sm"></i> Add super admin</span></a></li>
               {% elif request.user.account_type == 2 %}
@@ -307,11 +307,7 @@
       <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            {% if request.user.account_type == 1%}
-              <h4>Create new department admin</h4>
-            {% elif request.user.account_type == 2%}
-              <h4>Create new superuser</h4>
-            {% endif %}
+              <h4 id="modal_head"></h4>
           </div>
         <div class="modal-body">
           <div class="panel panel-default">
@@ -382,19 +378,24 @@
         console.log(value_);
         if (value_ === " Register Dept. Admin") {
           $("#admin_type_div").html("<input name='admin_type' type='hidden' value='dept_admin'>");
+          $("#modal_head").text("Register Departmental Admin");
         }
         if(value_ === " Register Dept. Staff"){
           $("#admin_type_div").html("<input name='admin_type' type='hidden' value='dept_staff'>");
+          $("#modal_head").text("Register Departmental Staff");
         }
         if(value_ === " Add super admin"){
           console.log("val 2", value_);
           $("#admin_type_div").html("<input name='admin_type' type='hidden' value='superuser'>");
+          $("#modal_head").text("Register Super Admin");
         }
 
         $('#registerAdmin_modal').modal("show");
       });
       $("#registerAdmin_modal").on("hidden.bs.modal", function(){
         // $("#register_dept_admin")[0].reset();
+        $("#register_dept_admin")[0].reset();
+        $("#form_content").css('display', 'block');
         $("#admin_type_div").empty();
         $("#login-form-main-message").css("display", "none");
         $("#reg_errors").css("display", "none");

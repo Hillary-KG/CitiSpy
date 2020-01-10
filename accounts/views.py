@@ -196,6 +196,7 @@ class RegisterAdminView(View):
                     admin_type = self.request.POST['admin_type']
                     admin_email = self.request.POST['email']
                     admin = form.save(commit=False)
+                    print("form instance", admin)
                     
                     if admin_type == "superuser" and User.objects.filter(email=admin_email, is_superuser=True).exists():
                         res = {'status': "fail", 'error':"A superuser with the entered email address already exists"}

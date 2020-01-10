@@ -60,9 +60,10 @@ class RegisterAdmin(forms.ModelForm):
 
     def save(self, commit = True, *args, **kwargs):
         admin = super(RegisterAdmin, self).save(commit=False, *args, **kwargs)
-        print("admin here",self.cleaned_data)
+        print("admin here",admin.email)
         if commit:
-            email = self.cleaned_data['email']
+            print("I am in commit")
+            email = admin.email
             # if self.cleaned_data['admin_type'] == 'superuser' and User.objects.filter(email=email, is_superuser=True).exists():
             #     raise forms.ValidationError(_("A superuser with the entered email address already exists"), code="su exists")
             # if self.cleaned_data['admin_type'] == 'dept_staff' and User.objects.filter(email=email, account_type=2).exists():
@@ -84,8 +85,10 @@ class RegisterAdmin(forms.ModelForm):
             print("plain", plain_pswd)
             
             if new_admin_notification(admin.staff_number, admin.email) and admin_reg_email(plain_pswd, admin.email):
+                print("emails sent")
                 admin.save()
-            return admin
+            print("admin in form", admin)
+        return admin
             
             
 
