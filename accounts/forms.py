@@ -6,7 +6,6 @@ from accounts.models import User
 from django.core.exceptions import ValidationError 
 from django.core.validators import validate_email, RegexValidator 
 from .functions import admin_reg_email, new_admin_notification
-from django.contrib.auth.hashers import make_password
 from django.forms.utils import ErrorList
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.conf import settings
@@ -58,37 +57,37 @@ class RegisterAdmin(forms.ModelForm):
             code="invalid phone")
         return phone_num
 
-    def save(self, commit = True, *args, **kwargs):
-        admin = super(RegisterAdmin, self).save(commit=False, *args, **kwargs)
-        print("admin here",admin.email)
-        if commit:
-            print("I am in commit")
-            email = admin.email
-            # if self.cleaned_data['admin_type'] == 'superuser' and User.objects.filter(email=email, is_superuser=True).exists():
-            #     raise forms.ValidationError(_("A superuser with the entered email address already exists"), code="su exists")
-            # if self.cleaned_data['admin_type'] == 'dept_staff' and User.objects.filter(email=email, account_type=2).exists():
-            #     raise forms.ValidationError(_("A Staff with the entered email address already exists"), code="staff exists")
-            # if self.cleaned_data['admin_type'] == 'dept_admin' and User.objects.filter(email=email, account_type=1).exists():
-            #     raise forms.ValidationError(_("An admin with the entered email address already exists"), code="admin exists")
-            # if self.cleaned_data['admin_type'] == 'superuser':
-            #     admin.is_superuser = True
-            #     admin.account_type = 1
-            #     admin.is_staff = True
-            # if self.cleaned_data['admin_type'] == 'dept_admin':
-            #     admin.account_type = 2
-            #     admin.is_staff = True
-            # if self.cleaned_data['admin_type'] == 'dept_staff':
-            #     admin.account_type = 3
-            #     admin.is_staff = True
-            plain_pswd = 'admin' + str(random.randint(999, 9999))
-            admin.password = make_password(plain_pswd)
-            print("plain", plain_pswd)
+    # def save(self, commit = True, *args, **kwargs):
+    #     admin = super(RegisterAdmin, self).save(commit=False, *args, **kwargs)
+    #     print("admin here",admin.email)
+    #     if commit:
+    #         print("I am in commit")
+    #         email = admin.email
+    #         # if self.cleaned_data['admin_type'] == 'superuser' and User.objects.filter(email=email, is_superuser=True).exists():
+    #         #     raise forms.ValidationError(_("A superuser with the entered email address already exists"), code="su exists")
+    #         # if self.cleaned_data['admin_type'] == 'dept_staff' and User.objects.filter(email=email, account_type=2).exists():
+    #         #     raise forms.ValidationError(_("A Staff with the entered email address already exists"), code="staff exists")
+    #         # if self.cleaned_data['admin_type'] == 'dept_admin' and User.objects.filter(email=email, account_type=1).exists():
+    #         #     raise forms.ValidationError(_("An admin with the entered email address already exists"), code="admin exists")
+    #         # if self.cleaned_data['admin_type'] == 'superuser':
+    #         #     admin.is_superuser = True
+    #         #     admin.account_type = 1
+    #         #     admin.is_staff = True
+    #         # if self.cleaned_data['admin_type'] == 'dept_admin':
+    #         #     admin.account_type = 2
+    #         #     admin.is_staff = True
+    #         # if self.cleaned_data['admin_type'] == 'dept_staff':
+    #         #     admin.account_type = 3
+    #         #     admin.is_staff = True
+    #         plain_pswd = 'admin' + str(random.randint(999, 9999))
+    #         admin.password = make_password(plain_pswd)
+    #         print("plain", plain_pswd)
             
-            if new_admin_notification(admin.staff_number, admin.email) and admin_reg_email(plain_pswd, admin.email):
-                print("emails sent")
-                admin.save()
-            print("admin in form", admin)
-        return admin
+    #         if new_admin_notification(admin.staff_number, admin.email) and admin_reg_email(plain_pswd, admin.email):
+    #             print("emails sent")
+    #             admin.save()
+    #         print("admin in form", admin)
+    #     return admin
             
             
 

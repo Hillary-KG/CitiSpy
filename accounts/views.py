@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
@@ -10,8 +11,9 @@ from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView
 from django.contrib.auth import login as login_user, logout, authenticate
+from django.contrib.auth.hashers import make_password
 
-from .functions import password_generator
+from accounts.functions import staff_reg_email, admin_reg_email, superuser_reg_email
 
 # from django.shortcuts import render
 
@@ -195,28 +197,46 @@ class RegisterAdminView(View):
                 try:
                     admin_type = self.request.POST['admin_type']
                     admin_email = self.request.POST['email']
-                    admin = form.save(commit=False)
-                    print("form instance", admin)
+                    obj = form.save(commit=False)
+                    # print("form instance", admin)
                     
                     if admin_type == "superuser" and User.objects.filter(email=admin_email, is_superuser=True).exists():
                         res = {'status': "fail", 'error':"A superuser with the entered email address already exists"}
+                        return JsonResponse(res)
+
                     if admin_type == "dept_admin" and User.objects.filter(email=admin_email, account_type=2).exists():
                         res = {'status': "fail", 'error':"An admin with the entered email address already exists"}
+                        return JsonResponse(res)
+
                     if admin_type == "dept_staff" and User.objects.filter(email=admin_email, account_type=3).exists():
                         res = {'status': "fail", 'error':"A Staff with the entered email address already exists"}
+                        return JsonResponse(res)
+                    
+                    plain_pswd = 'admin' + str(random.randint(999, 9999))
+                    obj.password = make_password(plain_pswd)
 
                     if admin_type == 'superuser':
-                        admin.is_superuser = True
-                        admin.account_type = 1
-                        admin.is_staff = True
+                        obj.is_superuser = True
+                        obj.account_type = 1
+                        obj.is_staff = True
+                        superuser_reg_email(plain_pswd, obj.email)
                     if admin_type == 'dept_admin':
-                        admin.account_type = 2
-                        admin.is_staff = True
+                        obj.account_type = 2
+                        obj.is_staff = True
+                        sendEmail = admin_reg_email(plain_pswd, obj.email)
                     if admin_type == 'dept_staff':
-                        admin.account_type = 3
-                        admin.is_staff = True
-                    admin.save()
-                    print("saved data",admin)
+                        obj.account_type = 3
+                        obj.is_staff = True
+                        sendEmail = staff_reg_email(plain_pswd, obj.email)
+
+                    # if sendEmail == True:
+                    #     obj.save()
+                    #     print("saved data",obj)
+                    # else:
+                    #     res = {'status': "fail", 'error':"Email sending failed"}
+                    obj.save()
+                    print("saved data",obj)
+                    return JsonResponse(res)
                 except Exception as e:
                     print(e)
                     res = {'status': "fail", 'error':"db error"}
