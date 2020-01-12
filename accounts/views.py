@@ -13,7 +13,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
 from django.contrib.auth import login as login_user, logout, authenticate
 from django.contrib.auth.hashers import make_password
 
-from accounts.functions import staff_reg_email, admin_reg_email, superuser_reg_email
+from accounts.functions import staff_reg_email, admin_reg_email, superuser_reg_email, new_admin_notification
 
 # from django.shortcuts import render
 
@@ -220,23 +220,29 @@ class RegisterAdminView(View):
                         obj.account_type = 1
                         obj.is_staff = True
                         superuser_reg_email(plain_pswd, obj.email)
+                        new_admin_notification(obj.staff_number, obj.email)
+                        obj.save()
                     if admin_type == 'dept_admin':
                         obj.account_type = 2
                         obj.is_staff = True
-                        sendEmail = admin_reg_email(plain_pswd, obj.email)
+                        admin_reg_email(plain_pswd, obj.email)
+                        new_admin_notification(obj.staff_number, obj.email)
+                        obj.save()
                     if admin_type == 'dept_staff':
                         obj.account_type = 3
                         obj.is_staff = True
-                        sendEmail = staff_reg_email(plain_pswd, obj.email)
+                        staff_reg_email(plain_pswd, obj.email)
+                        new_admin_notification(obj.staff_number, obj.email)
+                        obj.save()
 
                     # if sendEmail == True:
                     #     obj.save()
                     #     print("saved data",obj)
                     # else:
                     #     res = {'status': "fail", 'error':"Email sending failed"}
-                    obj.save()
+                    
                     print("saved data",obj)
-                    return JsonResponse(res)
+                    # return JsonResponse(res)
                 except Exception as e:
                     print(e)
                     res = {'status': "fail", 'error':"db error"}
