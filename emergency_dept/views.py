@@ -7,6 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.sessions.backends.db import SessionStore
 
 from accounts.forms import RegisterAdmin
+from firebase.firebase import get_alerts
 
 
 # Create your views here.
@@ -22,8 +23,12 @@ class DashboardView(View):
     # @csrf_protect
     def get( self, request):
         admin_form = RegisterAdmin()
+        #fetching the alerts for first time display
+        # alerts = get_alerts()
+
         context = {
                 'admin_form': admin_form,
+                # 'alerts': alerts,
             }
 
         if request.user.is_authenticated:
