@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "629555630146",
+    "firebase_url": "https://citispy-91191.firebaseio.com",
+    "project_id": "citispy-91191",
+    "storage_bucket": "citispy-91191.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629555630146:android:5368f8c128506168559ddb",
+        "android_client_info": {
+          "package_name": "com.hillux.citispy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629555630146-3gu69vb6gsph83su3ti44o1p5jn49grh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hillux.citispy",
+            "certificate_hash": "aabd74dce8d34b883e340193b0dbac20c33f5779"
+          }
+        },
+        {
+          "client_id": "629555630146-3v1ngchuut0korsimdr7qse2g3mfu49p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6oVPVnK2zBjU_3rCXe3-4grQuuIBbKNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629555630146-3v1ngchuut0korsimdr7qse2g3mfu49p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
