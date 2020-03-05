@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".LoginRegisterActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="3"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="10dp">-->
 
         <ImageView
-            android:layout_width="117dp"
-            android:layout_height="192dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_margin="16dp"
             android:contentDescription="@string/app_name"
-            android:src="@mipmap/citispy" />
+            android:src="@mipmap/citispy"
+            android:layout_gravity="center"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -33,11 +36,11 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="750dp"
+        android:layout_height="0dp"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:orientation="vertical"
@@ -64,7 +67,6 @@
                 android:id="@+id/inputFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
                 android:hint="@string/first_name_hint"
                 android:inputType="textPersonName"
                 android:padding="16dp"
@@ -86,16 +88,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/phone_hint"
                 android:inputType="phone"
-                android:padding="16dp"
-                android:textColor="@android:color/white" />
-
-
-            <EditText
-                android:id="@+id/inputEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email_hint"
-                android:inputType="textEmailAddress"
                 android:padding="16dp"
                 android:textColor="@android:color/white" />
 
@@ -144,7 +136,7 @@
                 android:id="@+id/buttonResend"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:text="@string/resend_btn"

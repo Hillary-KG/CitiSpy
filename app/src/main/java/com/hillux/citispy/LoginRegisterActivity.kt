@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_login_register.buttonResend
 import kotlinx.android.synthetic.main.activity_login_register.buttonStartVerification
 import kotlinx.android.synthetic.main.activity_login_register.buttonVerifyPhone
 import kotlinx.android.synthetic.main.activity_login_register.progressBar
-import kotlinx.android.synthetic.main.activity_login_register.inputEmail
+//import kotlinx.android.synthetic.main.activity_login_register.inputEmail
 import kotlinx.android.synthetic.main.activity_login_register.inputFirstName
 import kotlinx.android.synthetic.main.activity_login_register.inputLastName
 import kotlinx.android.synthetic.main.activity_login_register.inputPhoneNumber
@@ -186,7 +186,7 @@ class LoginRegisterActivity: AppCompatActivity(), View.OnClickListener {
             var userDetails: Map<String, String> = mapOf(
                 "first_name" to inputFirstName!!.toString(),
                 "last_name" to inputLastName!!.toString(),
-                "email_address" to inputEmail!!.toString(),
+//                "email_address" to inputEmail!!.toString(),
                 "phone_number" to inputPhoneNumber!!.toString()
                 )
             database.child("users").child(user.uid).setValue(userDetails)
