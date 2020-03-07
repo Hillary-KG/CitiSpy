@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private var user: FirebaseUser? = null
 
 
+    val firebaseAuth = FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,15 +33,21 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         user = FirebaseAuth.getInstance().currentUser
 
-        authListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-            val currentUser = firebaseAuth.currentUser
 
-            if (currentUser == null) {
-                startActivity(Intent(this@MainActivity, LoginRegisterActivity::class.java))
-                finish()
-            }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        firebaseAuth!!.addAuthStateListener (this.authStateListener);
+    }
+    val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        val currentUser = firebaseAuth.currentUser
+
+        if (currentUser == null) {
+            startActivity(Intent(this, LoginRegisterActivity::class.java))
+            finish()
         }
-
     }
 
     private fun raiseAlarm(user: FirebaseUser){
