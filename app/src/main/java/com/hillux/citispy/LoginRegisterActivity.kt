@@ -194,6 +194,7 @@ class LoginRegisterActivity: AppCompatActivity(), View.OnClickListener {
     }
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
+        buttonVerifyPhone.visibility = View.GONE
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber, // Phone number to verify
             60, // Timeout duration
@@ -201,6 +202,7 @@ class LoginRegisterActivity: AppCompatActivity(), View.OnClickListener {
             this, // Activity (for callback binding)
             callbacks) // OnVerificationStateChangedCallbacks
         // [END start_phone_auth]
+
 
         verificationInProgress = true
     }
@@ -355,13 +357,18 @@ class LoginRegisterActivity: AppCompatActivity(), View.OnClickListener {
         if (user == null) {
             // Signed out
             phoneAuthFields.visibility = View.VISIBLE
-            authButtons.visibility = View.GONE
+//            authButtons.visibility = View.VISIBLE
+            buttonVerifyPhone.visibility = View.GONE
+            buttonResend.visibility = View.GONE
+            buttonResend.isEnabled = false
+            buttonResend.isClickable = false
+
 
 //            status.setText(R.string.signed_out)
         } else {
             // Signed in
             phoneAuthFields.visibility = View.GONE
-            authButtons.visibility = View.VISIBLE
+            authButtons.visibility = View.GONE
 
             enableViews(inputPhoneNumber, fieldVerificationCode)
             inputPhoneNumber.text = null

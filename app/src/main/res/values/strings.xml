@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CitiSpy</string>
+    <string name="app_name">Alertify</string>
     <string name="signup">Sign Up</string>
     <string name="login">Login</string>
     <string name="status_code_sent">Verification Code Sent</string>
