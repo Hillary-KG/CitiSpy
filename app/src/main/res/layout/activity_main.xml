@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_layout"
     android:baselineAligned="false"
     android:orientation="vertical"
     tools:context=".MainActivity"
@@ -12,7 +13,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:layout_margin="15dp">
@@ -24,7 +25,7 @@
             android:layout_marginBottom="20dp"
 
             android:contentDescription="@string/app_name"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:src="@mipmap/citispy" />
 
         <TextView
@@ -40,8 +41,8 @@
             android:layout_marginBottom="20dp"
             />
         <CheckBox android:id="@+id/checkboxTagContacts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
             android:text="@string/tagUsers"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
