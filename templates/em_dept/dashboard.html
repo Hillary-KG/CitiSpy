@@ -259,12 +259,15 @@
                     </ul>
                   </div>
                   <div class="panel-body" id="alertMappingWidget">
-                    <div id="placeholder" class="graph" style="height:250px"></div>
+                    <div id="placeholder" class="graph" style="height:250px">
+                      <span class="text-center">Emergency Alerts Mapping</span>
+                      <div style="width: 50%; text-align: center;"><img src="{% static 'img/nai_map.png' %}" alt=""></div>
+                    </div>
                   </div>
                   <div class="panel-footer">
                     <div class="row row-merge">
                       <div class="col-xs-12 text-center border-right">
-                        <h4 class="no-margin">1232</h4>
+                        <h4 class="no-margin">0</h4>
                         <small class="text-muted">Total Alerts</small>
                       </div>
                     </div><!-- ./row -->
@@ -279,7 +282,9 @@
         <div class="col-lg-12">
           <div class="panel bg-info fadeInDown animation-delay4">
             <div class="panel-body">
-              <div id="alertsLineChart" style="height: 250px;"></div>
+              <div id="alertsLineChart" style="height: 250px;">
+                <span class="text-center">Emergency Trend Graph</span>
+              </div>
             </div>
             <div class="panel-footer">
               <div class="row">

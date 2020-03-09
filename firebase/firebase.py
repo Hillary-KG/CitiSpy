@@ -11,37 +11,49 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.utils import timezone
 
 
-
-# firebase_app = pyrebase.initialize_app(firebase_config)
-
-# auth = firebase_app.auth()
-
-
-# print(firebase_app)
-
-# from firebase_admin import auth
-# default_app =  firebase_admin.initialize_app()
-# user = auth.get_user_by_email("rexwaki@gmail.com")
-# print("user", user.uid)
-
-# print("default app", default_app.name)
-
+##########app initialization##############
+cred = credentials.Certificate('/home/hillux/projects/city_spy/citispy-91191-firebase-adminsdk-yy2lf-a8d218ff38.json')
 
 firebase_admin.initialize_app(cred, {
     'databaseURL': "https://citispy-91191.firebaseio.com"
 })
 
-def config():
+def add_alerts(alerts):
+    '''a function that manuallly adds alerts for testing purposes'''
+    db_ref = db.reference("7x1vUPvBtFNszHvmKHcI")
+    alerts_ref = db_ref.child('alerts')
+    alerts_ref.set(alerts)
 
-    # firebase_admin.initialize_app(cred, {
-    #     'databaseURL': "https://citispy-91191.firebaseio.com"
-    # })
+    return True
+
+#     print("db ref", alerts_ref.get('alert'))
+
+# # from firebase_admin import auth
+
+# user = auth.get_user_by_email(email)
+# print('Successfully fetched user data: {0}'.format(user.uid))
+
+
+
+
+def get_alerts():
+    ALERT_CONTAINER = []
 
     db_ref = db.reference("7x1vUPvBtFNszHvmKHcI")
     alerts_ref = db_ref.child('alerts')
 
+    print("db ref", alerts_ref.get())
+
+    for alert in alerts_ref.get().items():
+        ALERT_CONTAINER.append(json.dumps(alert))
+
+
+    return ALERT_CONTAINER
+
+    
+if __name__ == "__main__":
     mytz = pytz.timezone('Africa/Nairobi')
-    nai = {
+    alerts = {
         "alert_1":
             {
                 'location': [-1.286389, 36.817223],
@@ -74,31 +86,6 @@ def config():
             }
             
     }
-    alerts_ref.set(nai)
-    return True
+    # add_alerts(alerts)
 
-#     print("db ref", alerts_ref.get('alert'))
-
-# # from firebase_admin import auth
-
-# user = auth.get_user_by_email(email)
-# print('Successfully fetched user data: {0}'.format(user.uid))
-
-
-def get_alerts():
-    ALERT_CONTAINER = []
-
-    db_ref = db.reference("7x1vUPvBtFNszHvmKHcI")
-    alerts_ref = db_ref.child('alerts')
-
-    print("db ref", alerts_ref.get())
-    for alert in alerts_ref.get().items():
-        ALERT_CONTAINER.append(json.dumps(alert))
-
-
-    return ALERT_CONTAINER
-
-    
-# if __name__ == "__main__":
-#     config()
-#     print("Alerts", get_alerts())
+    print("Alerts", get_alerts())
