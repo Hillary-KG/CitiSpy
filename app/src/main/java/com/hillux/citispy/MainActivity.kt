@@ -2,6 +2,10 @@ package com.hillux.citispy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
+import androidx.appcompat.widget.Toolbar
 
 import android.widget.Toast
 import android.content.Intent

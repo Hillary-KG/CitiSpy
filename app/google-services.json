@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "629555630146-ur86c6hhcdm2pkqeqcuboj80ds1658ej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hillux.citispy",
+            "certificate_hash": "631166e5f7d4fcbe106f101d7464c1f2a6a99035"
+          }
+        },
+        {
           "client_id": "629555630146-3gu69vb6gsph83su3ti44o1p5jn49grh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

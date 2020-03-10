@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Widget.MaterialComponents.AppBarLayout.Primary">
+        android:theme="@style/Theme.Alertify">
         <activity android:name=".LoginRegisterActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
