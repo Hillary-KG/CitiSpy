@@ -23,5 +23,4 @@
             app:navigationIcon="@drawable/menu"
             app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
-
 </FrameLayout>

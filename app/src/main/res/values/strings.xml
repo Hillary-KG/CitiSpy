@@ -18,6 +18,8 @@
     <string name="verify_button">Verify</string>
     <string name="resend_btn">Resend</string>
     <string name="tagUsers">Tag Contacts</string>
+    <string name="action_tag_contact">Tag User</string>
+    <string name="action_edit_profile">Edit Profile</string>
     <string name="instruction">Welcome to Alertify.\nPress the button below to raise an alarm instantly.</string>
     <string name="alert_button">Raise Alarm</string>
 </resources>
