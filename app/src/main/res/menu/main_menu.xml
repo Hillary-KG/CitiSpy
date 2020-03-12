@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
-    <!-- "Mark Favorite", should appear as action button if possible -->
-    <item
-        android:id="@+id/action_tag_contact"
-        android:icon="@drawable/person_add-24px"
-        android:title="@string/action_tag_contact"
-        app:showAsAction="ifRoom"/>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_raise_alert"
+            android:icon="@drawable/ic_raise_alert"
+            android:title="@string/raise_alert"
+            android:checked="true"/>
+        <item
+            android:id="@+id/action_tag_contact"
+            android:icon="@drawable/ic_person"
+            android:title="@string/action_tag_contact"/>
 
-    <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_edit_profile"
-        android:icon="@drawable/edit-24px"
-        android:title="@string/action_edit_profile"
-        app:showAsAction="never"/>
+        <item
+            android:id="@+id/action_edit_profile"
+            android:icon="@drawable/ic_edit_profile"
+            android:title="@string/action_edit_profile" />
+    </group>
+
 </menu>
