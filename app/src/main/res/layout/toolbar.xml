@@ -1,6 +1,5 @@
 <com.google.android.material.appbar.MaterialToolbar
     android:id="@+id/toolbar"
-    style="@style/Widget.Alertify.Toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
@@ -11,4 +10,5 @@
     tools:ignore="MissingConstraints"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"/>

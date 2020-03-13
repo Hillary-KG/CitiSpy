@@ -20,7 +20,7 @@
     <string name="tagUsers">Tag Contacts</string>
     <string name="action_tag_contact">Tag User</string>
     <string name="action_edit_profile">Edit Profile</string>
-    <string name="instruction">Welcome to Alertify.\nPress the button below to raise an alarm instantly.</string>
+    <string name="instruction">Press the button below to raise an alarm instantly.</string>
     <string name="alert_button">Raise Alarm</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -36,4 +36,6 @@
 
     <string name="home_second">Home Second</string>
     <string name="raise_alert">Raise Alert</string>
+    <string name="tad_admin">Alert Admin</string>
+    <string name="search_hint">Search user by name ...</string>
 </resources>
